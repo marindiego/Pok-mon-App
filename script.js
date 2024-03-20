@@ -20,7 +20,7 @@ const pokemonCardInformationTextContent = (pokemonData) => {
     pokemonId.textContent = "#" + pokemonData.id;
     pokemonWeight.textContent = "Weight: " + pokemonData.weight;
     pokemonHeight.textContent = "Height: " +pokemonData.height;
-    pokemonImageContainer.innerHTML = `<img src="${pokemonData.sprites.front_default}" id="sprite" class="pokemon-image"> alt="${pokemonData.name} front default sprite"`;
+    pokemonImageContainer.innerHTML = `<img src="${pokemonData.sprites.front_default}" id="sprite" class="pokemon-image" alt="${pokemonData.name} front default sprite">`;
     pokemonHp.textContent = pokemonData.stats.find(base_stat => base_stat.stat.name === "hp").base_stat;
     pokemonAttack.textContent = pokemonData.stats.find(base_stat => base_stat.stat.name === "attack").base_stat;
     pokemonDefense.textContent = pokemonData.stats.find(base_stat => base_stat.stat.name === "defense").base_stat;
@@ -60,7 +60,7 @@ searchBtn.addEventListener("click", () => {
         alert("Please enter a pokemon name or id");
     }
 });
-searchBtn.addEventListener("submit",(e) => {
+searchBtn.addEventListener("keypress",(e) => {
     e.preventDefault();
     if (e.key === "Enter"){
         const searchValue = searchInput.value;
