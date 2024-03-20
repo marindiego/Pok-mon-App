@@ -68,7 +68,7 @@ main {
 .search-pokemon-container input:focus {
     outline: 2px solid rgb(82, 174, 255);
 }
-.search-pokemon-container button {
+.search-pokemon-container .search-btn {
     padding: 10px 20px;
     height: 40px;
     border: none;
@@ -132,10 +132,19 @@ main {
     background: #d29aac;
 }
 .water {
-    background: #35e372;
+    background: #34c5ee;
 }
 .ground {
-    background: #787e5d;
+    background: #957011;
+}
+.fire {
+    background: #df6332;
+}
+.grass {
+    background: #239627;
+}
+.ice {
+    background: #488ef7;
 }
 table {
     min-width: 100%;
