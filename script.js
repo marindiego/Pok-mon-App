@@ -14,12 +14,12 @@ const pokemonSpecialAttack = document.getElementById('special-attack');
 const pokemonSpecialDefense = document.getElementById('special-defense');
 const pokemonSpeed = document.getElementById('speed');
 
-
-const pokemonCardInformationTextContent = (pokemonData) => {
+// Función para mostrar información del Pokémon en la tarjeta
+const displayPokemonInfo = (pokemonData) => {
     pokemonName.textContent = pokemonData.name.toUpperCase();
     pokemonId.textContent = "#" + pokemonData.id;
     pokemonWeight.textContent = "Weight: " + pokemonData.weight;
-    pokemonHeight.textContent = "Height: " +pokemonData.height;
+    pokemonHeight.textContent = "Height: " + pokemonData.height;
     pokemonImageContainer.innerHTML = `<img src="${pokemonData.sprites.front_default}" id="sprite" class="pokemon-image" alt="${pokemonData.name} front default sprite">`;
     pokemonHp.textContent = pokemonData.stats.find(base_stat => base_stat.stat.name === "hp").base_stat;
     pokemonAttack.textContent = pokemonData.stats.find(base_stat => base_stat.stat.name === "attack").base_stat;
@@ -30,49 +30,50 @@ const pokemonCardInformationTextContent = (pokemonData) => {
     pokemonTypeContainer.innerHTML = pokemonData.types.map(type => `<span class="${type.type.name}">${type.type.name.toUpperCase()}</span>`).join('');
 }
 
+// Función para buscar un Pokémon por su ID
 const searchPokemonById = (id) => {
-    fetch(pokemonsUrl + "/" + id)
+    fetch(`${pokemonsUrl}/${id}`)
         .then((res) => res.json())
         .then((pokemonData) => {
-            pokemonCardInformationTextContent(pokemonData);
+            displayPokemonInfo(pokemonData);
         })
-        .catch(error => alert("Pokemon not found aqui")
-        );
-    }
-const searchPokemonByName = (name) => {
-    fetch(pokemonsUrl + "/" + name.toLowerCase())
-        .then((res) => res.json())
-        .then((pokemonData) => {
-            pokemonCardInformationTextContent(pokemonData); 
-        })
-        .catch(error => alert("Pokemon not found")
-        );
+        .catch(error => {
+            console.error("Error al buscar Pokémon por ID:", error);
+            alert("Pokemon not found");
+        });
 }
+
+// Función para buscar un Pokémon por su nombre
+const searchPokemonByName = (name) => {
+    fetch(`${pokemonsUrl}/${name.toLowerCase()}`)
+        .then((res) => res.json())
+        .then((pokemonData) => {
+            displayPokemonInfo(pokemonData);
+        })
+        .catch(error => {
+            console.error("Error al buscar Pokémon por nombre:", error);
+            alert("Pokemon not found");
+        });
+}
+
+// Evento clic en el botón de búsqueda
 searchBtn.addEventListener("click", () => {
-    const searchValue = searchInput.value;
-    if (searchValue.length > 0) {
-        if (parseInt(searchValue)) {
+    const searchValue = searchInput.value.trim();
+    if (searchValue) {
+        if (!isNaN(searchValue)) { // Comprobar si es un número
             searchPokemonById(searchValue);
         } else {
             searchPokemonByName(searchValue);
-        }  
+        }
     } else {
         alert("Please enter a pokemon name or id");
     }
 });
-searchBtn.addEventListener("keypress",(e) => {
-    e.preventDefault();
-    if (e.key === "Enter"){
-        const searchValue = searchInput.value;
-            if (searchValue.length > 0) {
-                if (parseInt(searchValue)) {
-                    searchPokemonById(searchValue);
-                } else {
-                    searchPokemonByName(searchValue);
-                }  
-            } else {
-                alert("Please enter a pokemon name or id");
-            return
-        }
+
+// Evento de tecla presionada en el campo de entrada de búsqueda
+searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click(); // Simular clic en el botón de búsqueda
     }
-})
+});
